@@ -5,6 +5,7 @@ import java.util.Map;
 
 import ca.danib.gameoflife.model.Cell;
 import ca.danib.gameoflife.model.Game;
+import ca.danib.gameoflife.model.LifeStatus;
 import ca.danib.gameoflife.model.Position;
 
 public class GameServiceImpl implements IGameService {
@@ -29,9 +30,18 @@ public class GameServiceImpl implements IGameService {
 		return cells;
 	}
 
-	private Cell buildCell(Position position) {
+	protected Cell buildCell(Position position) {
 		Cell cell = new Cell(position);
+		cell.setLifeStatus(initializeLifeStatus(position.getRow(), position.getColumn()));
 		return cell;
+	}
+
+	// This could be in a SeedService/Strategy
+	protected LifeStatus initializeLifeStatus(Integer row, Integer column) {
+		if(row % 3 == 0) {
+			return LifeStatus.ALIVE;
+		}
+		return LifeStatus.DEAD;
 	}
 
 }

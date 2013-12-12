@@ -50,9 +50,18 @@ public class GameServiceImplTest {
 				assertEquals(expectedPosition, actualCell.getPosition());
 			}
 		}
+		assertTrue(atLeastOneCellAlive(game.getPositionCells()));
+		assertTrue(atLeastOneCellDead(game.getPositionCells()));
+	}
 
-		// wip...
-//		assertTrue(atLeastOneCellAlive(game.getPositionCells()));
+	private boolean atLeastOneCellDead(Map<Position, Cell> positionCells) {
+		Collection<Cell> cells = positionCells.values();
+		for (Cell cell : cells) {
+			if(LifeStatus.DEAD.equals(cell.getLifeStatus())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean atLeastOneCellAlive(Map<Position, Cell> positionCells) {
