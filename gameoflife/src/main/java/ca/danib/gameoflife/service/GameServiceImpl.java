@@ -7,6 +7,7 @@ import ca.danib.gameoflife.model.Cell;
 import ca.danib.gameoflife.model.Game;
 import ca.danib.gameoflife.model.LifeStatus;
 import ca.danib.gameoflife.model.Position;
+import ca.danib.gameoflife.model.Board;
 
 public class GameServiceImpl implements IGameService {
 
@@ -19,15 +20,15 @@ public class GameServiceImpl implements IGameService {
 		return game;
 	}
 
-	protected Map<Position, Cell> buildCells(Integer rows, Integer columns) {
-		Map<Position, Cell> cells = new HashMap<Position, Cell>();
+	protected Board buildCells(Integer rows, Integer columns) {
+		Map<Position, Cell> positionCells = new HashMap<Position, Cell>();
 		for(int row=0; row<rows; row++) {
 			for(int column=0; column<columns; column++) {
 				Position position = new Position(row, column);
-				cells.put(position, buildCell(position));
+				positionCells.put(position, buildCell(position));
 			}
 		}
-		return cells;
+		return new Board(positionCells);
 	}
 
 	protected Cell buildCell(Position position) {

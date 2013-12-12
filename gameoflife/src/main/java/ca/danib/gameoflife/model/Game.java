@@ -1,13 +1,12 @@
 package ca.danib.gameoflife.model;
 
-import java.util.Map;
 
 public class Game {
-	
+
 	private Integer rows;
 	private Integer columns;
-	private Map<Position, Cell> positionCells;
-	
+	private Board positionCells;
+
 	public Integer getRows() {
 		return rows;
 	}
@@ -20,11 +19,11 @@ public class Game {
 	public void setColumns(Integer columns) {
 		this.columns = columns;
 	}
-	public Map<Position, Cell> getPositionCells() {
+	public Board getPositionCells() {
 		return positionCells;
 	}
-	public void setPositionCells(Map<Position, Cell> cells) {
-		this.positionCells = cells;
+	public void setPositionCells(Board positionCells) {
+		this.positionCells = positionCells;
 	}
-	
+
 }

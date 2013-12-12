@@ -32,26 +32,27 @@ public class GameServiceImplTest {
 		Integer expectedNumberOfCells = rows * columns;
 
 		Game game = fixture.initializeGame(rows, columns);
+		Map<Position, Cell> positionCells = game.getPositionCells().getPositionCells();
 
 		assertNotNull(game);
 		assertEquals(rows, game.getRows());
 		assertEquals(columns, game.getColumns());
 
 		assertNotNull(game.getPositionCells());
-		assertEquals(expectedNumberOfCells.intValue(), game.getPositionCells().size());
+		assertEquals(expectedNumberOfCells.intValue(), positionCells.size());
 
-		Set<Position> actualPositionKeys = game.getPositionCells().keySet();
+		Set<Position> actualPositionKeys = positionCells.keySet();
 		for(int row=0; row<rows; row++) {
 			for(int column=0; column<columns; column++) {
 				Position expectedPosition = new Position(row,column);
 				assertTrue(actualPositionKeys.contains(expectedPosition));
-				Cell actualCell = game.getPositionCells().get(expectedPosition);
+				Cell actualCell = positionCells.get(expectedPosition);
 				assertNotNull(actualCell);
 				assertEquals(expectedPosition, actualCell.getPosition());
 			}
 		}
-		assertTrue(atLeastOneCellAlive(game.getPositionCells()));
-		assertTrue(atLeastOneCellDead(game.getPositionCells()));
+		assertTrue(atLeastOneCellAlive(positionCells));
+		assertTrue(atLeastOneCellDead(positionCells));
 	}
 
 	private boolean atLeastOneCellDead(Map<Position, Cell> positionCells) {
@@ -72,6 +73,30 @@ public class GameServiceImplTest {
 			}
 		}
 		return false;
+	}
+
+	@Test
+	public void testInitializeLifeStatus_rowEvenlyDivisibleBy() {
+		Integer row = 9;
+		Integer column = 1;
+		LifeStatus result = fixture.initializeLifeStatus(row, column);
+		assertEquals(LifeStatus.ALIVE, result);
+	}
+
+	@Test
+	public void testInitializeLifeStatus_rowNotEvenlyDivisibleBy() {
+		Integer row = 10;
+		Integer column = 1;
+		LifeStatus result = fixture.initializeLifeStatus(row, column);
+		assertEquals(LifeStatus.DEAD, result);
+	}
+
+	@Test
+	public void testInitializeLifeStatus_rowZero() {
+		Integer row = 0;
+		Integer column = 1;
+		LifeStatus result = fixture.initializeLifeStatus(row, column);
+		assertEquals(LifeStatus.ALIVE, result);
 	}
 
 }
