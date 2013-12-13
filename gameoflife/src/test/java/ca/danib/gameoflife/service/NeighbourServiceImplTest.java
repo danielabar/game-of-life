@@ -25,7 +25,7 @@ public class NeighbourServiceImplTest {
 	}
 
 	@Test
-	public void testGetNumberOfLivingNeighbours() throws Exception {
+	public void testGetNumberOfLivingNeighbours() {
 		Integer cellRow = 1;
 		Integer cellColumn = 1;
 		Position cellPosition = new Position(cellRow, cellColumn);
@@ -41,27 +41,50 @@ public class NeighbourServiceImplTest {
 		Map<Position, Cell> positionCells = new HashMap<Position, Cell>();
 		positionCells.put(new Position(0,0), new Cell(new Position(0,0), LifeStatus.ALIVE));
 		positionCells.put(new Position(0,1), new Cell(new Position(0,1), LifeStatus.DEAD));
-		positionCells.put(new Position(0,2), new Cell(new Position(0,1), LifeStatus.ALIVE));
-		positionCells.put(new Position(1,0), new Cell(new Position(0,1), LifeStatus.DEAD));
-		positionCells.put(new Position(1,1), new Cell(new Position(1, 1), LifeStatus.ALIVE));
-		positionCells.put(new Position(1,2), new Cell(new Position(0,1), LifeStatus.ALIVE));
-		positionCells.put(new Position(2,0), new Cell(new Position(0,1), LifeStatus.DEAD));
-		positionCells.put(new Position(2,1), new Cell(new Position(0,1), LifeStatus.DEAD));
-		positionCells.put(new Position(2,2), new Cell(new Position(0,1), LifeStatus.DEAD));
+		positionCells.put(new Position(0,2), new Cell(new Position(0,2), LifeStatus.ALIVE));
+		positionCells.put(new Position(0,3), new Cell(new Position(0,3), LifeStatus.DEAD));
+		positionCells.put(new Position(1,0), new Cell(new Position(1,0), LifeStatus.DEAD));
+		positionCells.put(new Position(1,1), new Cell(new Position(1,1), LifeStatus.ALIVE));
+		positionCells.put(new Position(1,2), new Cell(new Position(1,2), LifeStatus.ALIVE));
+		positionCells.put(new Position(1,3), new Cell(new Position(1,3), LifeStatus.DEAD));
+		positionCells.put(new Position(2,0), new Cell(new Position(2,0), LifeStatus.DEAD));
+		positionCells.put(new Position(2,1), new Cell(new Position(2,1), LifeStatus.DEAD));
+		positionCells.put(new Position(2,2), new Cell(new Position(2,2), LifeStatus.DEAD));
+		positionCells.put(new Position(2,3), new Cell(new Position(2,3), LifeStatus.DEAD));
+		positionCells.put(new Position(3,0), new Cell(new Position(3,0), LifeStatus.DEAD));
+		positionCells.put(new Position(3,1), new Cell(new Position(3,1), LifeStatus.DEAD));
+		positionCells.put(new Position(3,2), new Cell(new Position(3,2), LifeStatus.DEAD));
+		positionCells.put(new Position(3,3), new Cell(new Position(3,3), LifeStatus.DEAD));
 		return new Board(positionCells);
 	}
 
 	@Test
 	public void testGetTopLeftNeighbour() {
-		Integer cellRow = 1;
-		Integer cellColumn = 1;
-		Position cellPosition = new Position(cellRow, cellColumn);
-		Cell cellToEvaluate = new Cell(cellPosition, LifeStatus.ALIVE);
-
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
 		Board board = buildBoard();
 
 		Position expectedPosition = new Position(0,0);
 		Cell actualResult = fixture.getTopLeftNeighbour(cellToEvaluate, board);
+		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetTopMiddleNeighbour() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		Position expectedPosition = new Position(0,1);
+		Cell actualResult = fixture.getTopMiddleNeighbour(cellToEvaluate, board);
+		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetTopRightNeighbour() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		Position expectedPosition = new Position(0,2);
+		Cell actualResult = fixture.getTopRightNeighbour(cellToEvaluate, board);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 

@@ -3,14 +3,15 @@ package ca.danib.gameoflife.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.danib.gameoflife.model.Board;
 import ca.danib.gameoflife.model.Cell;
 import ca.danib.gameoflife.model.Game;
 import ca.danib.gameoflife.model.LifeStatus;
 import ca.danib.gameoflife.model.Position;
-import ca.danib.gameoflife.model.Board;
 
 public class GameServiceImpl implements IGameService {
 
+	// Nice to have: GameValidator to ensure game size makes sense (eg: minimum 4x4?)
 	@Override
 	public Game initializeGame(Integer rows, Integer columns) {
 		Game game = new Game();
