@@ -19,4 +19,11 @@ public class Board {
 		this.positionCells = positionCells;
 	}
 
+	public Cell getCellAtPosition(Position position) {
+		if (this.positionCells == null) {
+			return null;
+		}
+		return this.positionCells.get(position);
+	}
+
 }
