@@ -42,7 +42,7 @@ public class NeighbourServiceImpl implements INeighbourService {
 
 	protected Cell getTopLeftNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopLeft = new Position(position.getRow()-1, position.getColumn()-1);
+		Position positionTopLeft = new Position(calculateTopRow(position, game), calculateLeftColumn(position, game));
 		return game.getBoard().getCellAtPosition(positionTopLeft);
 	}
 
@@ -54,37 +54,37 @@ public class NeighbourServiceImpl implements INeighbourService {
 
 	public Cell getTopRightNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopRight = new Position(position.getRow()-1, position.getColumn()+1);
+		Position positionTopRight = new Position(calculateTopRow(position, game), calculateRightColumn(position, game));
 		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
 	public Cell getLeftNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopRight = new Position(position.getRow(), position.getColumn()-1);
+		Position positionTopRight = new Position(position.getRow(), calculateLeftColumn(position, game));
 		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
 	public Cell getRightNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopRight = new Position(position.getRow(), position.getColumn()+1);
+		Position positionTopRight = new Position(position.getRow(), calculateRightColumn(position, game));
 		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
 	public Cell getBottomLeftNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopRight = new Position(position.getRow()+1, position.getColumn()-1);
+		Position positionTopRight = new Position(calculateBottomRow(position, game), calculateLeftColumn(position, game));
 		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
 	public Cell getBottomMiddleNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopRight = new Position(position.getRow()+1, position.getColumn());
+		Position positionTopRight = new Position(calculateBottomRow(position, game), position.getColumn());
 		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
 	public Cell getBottomRightNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopRight = new Position(position.getRow()+1, position.getColumn()+1);
+		Position positionTopRight = new Position(calculateBottomRow(position, game), calculateRightColumn(position, game));
 		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 

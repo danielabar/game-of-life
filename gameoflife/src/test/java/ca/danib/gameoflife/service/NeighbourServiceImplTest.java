@@ -72,6 +72,16 @@ public class NeighbourServiceImplTest {
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 
+	@Test
+	public void testGetTopLeftNeighbour_cellIsAtTopLeftOfBoard() {
+		Cell cellToEvaluate = new Cell(new Position(0, 0), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(3, 3);
+		Cell actualResult = fixture.getTopLeftNeighbour(cellToEvaluate, game);
+		assertThat("top left wraps to bottom right", actualResult.getPosition(), is(expectedPosition));
+	}
+
 	private Game buildGame() {
 		Game game = new Game(4, 4, buildBoard());
 		return game;
@@ -108,6 +118,16 @@ public class NeighbourServiceImplTest {
 	}
 
 	@Test
+	public void testGetTopRightNeighbour_cellIsAtTopRightOfBoard() {
+		Cell cellToEvaluate = new Cell(new Position(0, 3), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(3,0);
+		Cell actualResult = fixture.getTopRightNeighbour(cellToEvaluate, game);
+		assertThat("top right wraps to bottom left", actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
 	public void testGetLeftNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
 		Game game = buildGame();
@@ -115,6 +135,16 @@ public class NeighbourServiceImplTest {
 		Position expectedPosition = new Position(1,0);
 		Cell actualResult = fixture.getLeftNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetLeftNeighbour_cellIsATLeftEdgeOfBoard() {
+		Cell cellToEvaluate = new Cell(new Position(2, 0), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(2,3);
+		Cell actualResult = fixture.getLeftNeighbour(cellToEvaluate, game);
+		assertThat("left wraps to right", actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
@@ -128,6 +158,16 @@ public class NeighbourServiceImplTest {
 	}
 
 	@Test
+	public void testGetRightNeighbour_cellIsAtRightEdgeOfBaord() {
+		Cell cellToEvaluate = new Cell(new Position(1, 3), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(1,0);
+		Cell actualResult = fixture.getRightNeighbour(cellToEvaluate, game);
+		assertThat("right wraps to left", actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
 	public void testGetBottomLeftNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
 		Game game = buildGame();
@@ -135,6 +175,16 @@ public class NeighbourServiceImplTest {
 		Position expectedPosition = new Position(2,0);
 		Cell actualResult = fixture.getBottomLeftNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetBottomLeftNeighbour_cellIsAtBottomEdgeOfBoard() {
+		Cell cellToEvaluate = new Cell(new Position(3, 1), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(0,0);
+		Cell actualResult = fixture.getBottomLeftNeighbour(cellToEvaluate, game);
+		assertThat("bottom wraps to top, left decrements normally", actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
@@ -148,6 +198,16 @@ public class NeighbourServiceImplTest {
 	}
 
 	@Test
+	public void testGetBottomMiddleNeighbour_cellIsAtBottomEdgeOfBoard() {
+		Cell cellToEvaluate = new Cell(new Position(3, 1), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(0,1);
+		Cell actualResult = fixture.getBottomMiddleNeighbour(cellToEvaluate, game);
+		assertThat("bottom wraps to top", actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
 	public void testGetBottomRightNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
 		Game game = buildGame();
@@ -155,6 +215,16 @@ public class NeighbourServiceImplTest {
 		Position expectedPosition = new Position(2,2);
 		Cell actualResult = fixture.getBottomRightNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetBottomRightNeighbour_cellIsATBottomRightEdgeOfBoard() {
+		Cell cellToEvaluate = new Cell(new Position(3, 3), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(0,0);
+		Cell actualResult = fixture.getBottomRightNeighbour(cellToEvaluate, game);
+		assertThat("bottom right wraps to top left", actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
