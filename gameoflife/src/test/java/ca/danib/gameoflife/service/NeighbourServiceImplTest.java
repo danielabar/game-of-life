@@ -188,4 +188,76 @@ public class NeighbourServiceImplTest {
 		assertThat(allNeighbours.size(), is(8));
 	}
 
+	@Test
+	public void testCalculateTopRow_positionAtTopEdge() {
+		Game game = buildGame();
+		Position position = new Position(0, 0);
+
+		Integer result = fixture.calculateTopRow(position, game);
+		assertThat("top edge wraps to bottom", result, is(3));
+	}
+
+	@Test
+	public void testCalculateTopRow_positionNotAtTopEdge() {
+		Game game = buildGame();
+		Position position = new Position(1, 0);
+
+		Integer result = fixture.calculateTopRow(position, game);
+		assertThat("top is position minus one", result, is(0));
+	}
+
+	@Test
+	public void testCalculateBottomRow_positionAtBottomEdge() {
+		Game game = buildGame();
+		Position position = new Position(3,3);
+
+		Integer result = fixture.calculateBottomRow(position, game);
+		assertThat("bottom edge wraps to top", result, is(0));
+	}
+
+	@Test
+	public void testCalculateBottomRow_positionNotAtBottomEdge() {
+		Game game = buildGame();
+		Position position = new Position(2,3);
+
+		Integer result = fixture.calculateBottomRow(position, game);
+		assertThat("bottom is position plus one", result, is(3));
+	}
+
+	@Test
+	public void testCalculateLeftColumn_positionAtLeftEdge() {
+		Game game = buildGame();
+		Position position = new Position(0,0);
+
+		Integer result = fixture.calculateLeftColumn(position, game);
+		assertThat("left edge wraps to right", result, is(3));
+	}
+
+	@Test
+	public void testCalculateLeftColumn_positionNotAtLeftEdge() {
+		Game game = buildGame();
+		Position position = new Position(0,1);
+
+		Integer result = fixture.calculateLeftColumn(position, game);
+		assertThat("left is position minus one", result, is(0));
+	}
+
+	@Test
+	public void testCalculateRightColumn_positionAtRightEdge() {
+		Game game = buildGame();
+		Position position = new Position(0,3);
+
+		Integer result = fixture.calculateRightColumn(position, game);
+		assertThat("right edge wraps to left", result, is(0));
+	}
+
+	@Test
+	public void testCalculateRightColumn_positionNotAtRightEdge() {
+		Game game = buildGame();
+		Position position = new Position(0,2);
+
+		Integer result = fixture.calculateRightColumn(position, game);
+		assertThat("right is position plus one", result, is(3));
+	}
+
 }

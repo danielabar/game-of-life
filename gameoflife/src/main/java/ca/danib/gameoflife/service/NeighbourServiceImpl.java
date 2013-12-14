@@ -48,17 +48,9 @@ public class NeighbourServiceImpl implements INeighbourService {
 
 	protected Cell getTopMiddleNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-
-		int topRow = position.getRow()-1;
-		if (topRow < 0) {
-			topRow = game.getRows()-1;
-		}
-
-
-		Position positionTopMiddle = new Position(topRow, position.getColumn());
+		Position positionTopMiddle = new Position(calculateTopRow(position, game), position.getColumn());
 		return game.getBoard().getCellAtPosition(positionTopMiddle);
 	}
-
 
 	public Cell getTopRightNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
@@ -94,6 +86,38 @@ public class NeighbourServiceImpl implements INeighbourService {
 		Position position = cell.getPosition();
 		Position positionTopRight = new Position(position.getRow()+1, position.getColumn()+1);
 		return game.getBoard().getCellAtPosition(positionTopRight);
+	}
+
+	protected Integer calculateTopRow(Position position, Game game) {
+		int topRow = position.getRow()-1;
+		if (topRow < 0) {
+			topRow = game.getRows()-1;
+		}
+		return topRow;
+	}
+
+	protected Integer calculateBottomRow(Position position, Game game) {
+		int bottomRow = position.getRow()+1;
+		if (bottomRow >= game.getRows()) {
+			bottomRow = 0;
+		}
+		return bottomRow;
+	}
+
+	protected Integer calculateLeftColumn(Position position, Game game) {
+		int leftColumn = position.getColumn()-1;
+		if (leftColumn < 0) {
+			leftColumn = game.getColumns()-1;
+		}
+		return leftColumn;
+	}
+
+	protected Integer calculateRightColumn(Position position, Game game) {
+		int rightColumn = position.getColumn()+1;
+		if (rightColumn >= game.getColumns()) {
+			rightColumn = 0;
+		}
+		return rightColumn;
 	}
 
 }
