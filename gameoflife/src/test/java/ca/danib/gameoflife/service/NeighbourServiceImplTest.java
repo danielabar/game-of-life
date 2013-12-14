@@ -37,7 +37,7 @@ public class NeighbourServiceImplTest {
 		Board board = buildBoard();
 		Game game = new Game(4, 4, board);
 
-		Integer result = fixture.getNumberOfLivingNeighbours(cellToEvaluate, game, board);
+		Integer result = fixture.getNumberOfLivingNeighbours(cellToEvaluate, game);
 		assertEquals(3, result.intValue());
 	}
 
@@ -182,9 +182,9 @@ public class NeighbourServiceImplTest {
 	@Test
 	public void testGetAllNeighbours() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
-		List<Cell> allNeighbours = fixture.getAllNeighbours(cellToEvaluate, null, board);
+		List<Cell> allNeighbours = fixture.getAllNeighbours(cellToEvaluate, game);
 		assertThat(allNeighbours.size(), is(8));
 	}
 

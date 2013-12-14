@@ -3,7 +3,6 @@ package ca.danib.gameoflife.service;
 import java.util.Arrays;
 import java.util.List;
 
-import ca.danib.gameoflife.model.Board;
 import ca.danib.gameoflife.model.Cell;
 import ca.danib.gameoflife.model.Game;
 import ca.danib.gameoflife.model.LifeStatus;
@@ -12,12 +11,12 @@ import ca.danib.gameoflife.model.Position;
 public class NeighbourServiceImpl implements INeighbourService {
 
 	@Override
-	public Integer getNumberOfLivingNeighbours(Cell cell, Game game, Board board) {
-		List<Cell> allNeighbours = getAllNeighbours(cell, game, board);
+	public Integer getNumberOfLivingNeighbours(Cell cell, Game game) {
+		List<Cell> allNeighbours = getAllNeighbours(cell, game);
 		return countTheLiving(allNeighbours);
 	}
 
-	protected List<Cell> getAllNeighbours(Cell cell, Game game, Board board) {
+	protected List<Cell> getAllNeighbours(Cell cell, Game game) {
 		return Arrays.asList(
 				getTopLeftNeighbour(cell, game),
 				getTopMiddleNeighbour(cell, game),
