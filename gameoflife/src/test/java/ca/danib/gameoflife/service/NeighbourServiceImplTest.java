@@ -4,7 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -86,6 +88,87 @@ public class NeighbourServiceImplTest {
 		Position expectedPosition = new Position(0,2);
 		Cell actualResult = fixture.getTopRightNeighbour(cellToEvaluate, board);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetLeftNeighbour() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		Position expectedPosition = new Position(1,0);
+		Cell actualResult = fixture.getLeftNeighbour(cellToEvaluate, board);
+		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetRightNeighbour() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		Position expectedPosition = new Position(1,2);
+		Cell actualResult = fixture.getRightNeighbour(cellToEvaluate, board);
+		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetBottomLeftNeighbour() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		Position expectedPosition = new Position(2,0);
+		Cell actualResult = fixture.getBottomLeftNeighbour(cellToEvaluate, board);
+		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetBottomMiddleNeighbour() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		Position expectedPosition = new Position(2,1);
+		Cell actualResult = fixture.getBottomMiddleNeighbour(cellToEvaluate, board);
+		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetBottomRightNeighbour() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		Position expectedPosition = new Position(2,2);
+		Cell actualResult = fixture.getBottomRightNeighbour(cellToEvaluate, board);
+		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testCountTheLiving() {
+		List<Cell> cells = Arrays.asList(
+				new Cell(new Position(0, 0), LifeStatus.ALIVE),
+				new Cell(new Position(0, 1), LifeStatus.DEAD),
+				new Cell(new Position(0, 1), LifeStatus.ALIVE)
+				);
+		Integer result = fixture.countTheLiving(cells);
+		assertThat(result.intValue(), is(2));
+	}
+
+	@Test
+	public void testCountTheLiving_allDead() {
+		List<Cell> cells = Arrays.asList(
+				new Cell(new Position(0, 0), LifeStatus.DEAD),
+				new Cell(new Position(0, 1), LifeStatus.DEAD),
+				new Cell(new Position(0, 1), LifeStatus.DEAD)
+				);
+		Integer result = fixture.countTheLiving(cells);
+		assertThat(result.intValue(), is(0));
+	}
+
+	@Test
+	public void testGetAllNeighbours() {
+		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
+		Board board = buildBoard();
+
+		List<Cell> allNeighbours = fixture.getAllNeighbours(cellToEvaluate, board);
+		assertThat(allNeighbours.size(), is(8));
 	}
 
 }
