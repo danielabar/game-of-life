@@ -82,6 +82,7 @@ public class NeighbourServiceImplTest {
 		assertThat("top left wraps to bottom right", actualResult.getPosition(), is(expectedPosition));
 	}
 
+	// Nice to have TDF's so building objects is reusable among test classes
 	private Game buildGame() {
 		Game game = new Game(4, 4, buildBoard());
 		return game;

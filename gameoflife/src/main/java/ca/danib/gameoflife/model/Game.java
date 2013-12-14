@@ -33,4 +33,19 @@ public class Game {
 		this.board = positionCells;
 	}
 
+	public void draw() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Game board");
+		sb.append("\n");
+		for (int row=0; row<rows.intValue(); row++) {
+			for (int col=0; col<columns.intValue(); col++) {
+				Cell cell = board.getCellAtPosition(new Position(row, col));
+				sb.append(cell.getLifeStatus().getPrintChar());
+				sb.append(" ");
+			}
+			sb.append("\n");
+		}
+		System.out.println(sb.toString());
+	}
+
 }

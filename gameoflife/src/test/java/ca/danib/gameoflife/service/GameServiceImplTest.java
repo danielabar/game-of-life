@@ -1,16 +1,20 @@
 package ca.danib.gameoflife.service;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.danib.gameoflife.model.Board;
 import ca.danib.gameoflife.model.Cell;
 import ca.danib.gameoflife.model.Game;
 import ca.danib.gameoflife.model.LifeStatus;
@@ -22,6 +26,7 @@ public class GameServiceImplTest {
 
 	@Before
 	public void setUp() throws Exception {
+		// TODO: This is using real neighbour service, use mockito instead. Could have integration test to test collaboration with real service.
 		fixture = new GameServiceImpl();
 	}
 
@@ -97,6 +102,43 @@ public class GameServiceImplTest {
 		Integer column = 1;
 		LifeStatus result = fixture.initializeLifeStatus(row, column);
 		assertEquals(LifeStatus.ALIVE, result);
+	}
+
+	@Test
+	public void testBuildNextGeneration() {
+		Game currentGen = buildGame();
+		currentGen.draw();
+		Game nextGen = fixture.buildNextGeneration(currentGen);
+		nextGen.draw();
+
+		assertThat(nextGen.getColumns(), is(currentGen.getColumns()));
+		assertThat(nextGen.getRows(), is(currentGen.getRows()));
+	}
+
+	private Game buildGame() {
+		Game game = new Game(4, 4, buildBoard());
+		return game;
+	}
+
+	private Board buildBoard() {
+		Map<Position, Cell> positionCells = new HashMap<Position, Cell>();
+		positionCells.put(new Position(0,0), new Cell(new Position(0,0), LifeStatus.ALIVE));
+		positionCells.put(new Position(0,1), new Cell(new Position(0,1), LifeStatus.DEAD));
+		positionCells.put(new Position(0,2), new Cell(new Position(0,2), LifeStatus.ALIVE));
+		positionCells.put(new Position(0,3), new Cell(new Position(0,3), LifeStatus.DEAD));
+		positionCells.put(new Position(1,0), new Cell(new Position(1,0), LifeStatus.DEAD));
+		positionCells.put(new Position(1,1), new Cell(new Position(1,1), LifeStatus.ALIVE));
+		positionCells.put(new Position(1,2), new Cell(new Position(1,2), LifeStatus.ALIVE));
+		positionCells.put(new Position(1,3), new Cell(new Position(1,3), LifeStatus.DEAD));
+		positionCells.put(new Position(2,0), new Cell(new Position(2,0), LifeStatus.DEAD));
+		positionCells.put(new Position(2,1), new Cell(new Position(2,1), LifeStatus.DEAD));
+		positionCells.put(new Position(2,2), new Cell(new Position(2,2), LifeStatus.DEAD));
+		positionCells.put(new Position(2,3), new Cell(new Position(2,3), LifeStatus.DEAD));
+		positionCells.put(new Position(3,0), new Cell(new Position(3,0), LifeStatus.DEAD));
+		positionCells.put(new Position(3,1), new Cell(new Position(3,1), LifeStatus.DEAD));
+		positionCells.put(new Position(3,2), new Cell(new Position(3,2), LifeStatus.DEAD));
+		positionCells.put(new Position(3,3), new Cell(new Position(3,3), LifeStatus.DEAD));
+		return new Board(positionCells);
 	}
 
 }
