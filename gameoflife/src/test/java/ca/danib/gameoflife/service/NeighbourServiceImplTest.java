@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import ca.danib.gameoflife.model.Board;
 import ca.danib.gameoflife.model.Cell;
+import ca.danib.gameoflife.model.Game;
 import ca.danib.gameoflife.model.LifeStatus;
 import ca.danib.gameoflife.model.Position;
 
@@ -34,8 +35,9 @@ public class NeighbourServiceImplTest {
 		Cell cellToEvaluate = new Cell(cellPosition, LifeStatus.ALIVE);
 
 		Board board = buildBoard();
+		Game game = new Game(4, 4, board);
 
-		Integer result = fixture.getNumberOfLivingNeighbours(cellToEvaluate, board);
+		Integer result = fixture.getNumberOfLivingNeighbours(cellToEvaluate, game, board);
 		assertEquals(3, result.intValue());
 	}
 
@@ -63,80 +65,95 @@ public class NeighbourServiceImplTest {
 	@Test
 	public void testGetTopLeftNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(0,0);
-		Cell actualResult = fixture.getTopLeftNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getTopLeftNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	private Game buildGame() {
+		Game game = new Game(4, 4, buildBoard());
+		return game;
 	}
 
 	@Test
 	public void testGetTopMiddleNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(0,1);
-		Cell actualResult = fixture.getTopMiddleNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getTopMiddleNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
+	}
+
+	@Test
+	public void testGetTopMiddleNeighbour_cellToEvaluateIsAtTop() {
+		Cell cellToEvaluate = new Cell(new Position(0, 1), LifeStatus.ALIVE);
+		Game game = buildGame();
+
+		Position expectedPosition = new Position(3,1);
+		Cell actualResult = fixture.getTopMiddleNeighbour(cellToEvaluate, game);
+		assertThat("When cell to evaluate is at top, top neighbour wraps to bottom", actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
 	public void testGetTopRightNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(0,2);
-		Cell actualResult = fixture.getTopRightNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getTopRightNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
 	public void testGetLeftNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(1,0);
-		Cell actualResult = fixture.getLeftNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getLeftNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
 	public void testGetRightNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(1,2);
-		Cell actualResult = fixture.getRightNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getRightNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
 	public void testGetBottomLeftNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(2,0);
-		Cell actualResult = fixture.getBottomLeftNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getBottomLeftNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
 	public void testGetBottomMiddleNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(2,1);
-		Cell actualResult = fixture.getBottomMiddleNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getBottomMiddleNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 
 	@Test
 	public void testGetBottomRightNeighbour() {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
-		Board board = buildBoard();
+		Game game = buildGame();
 
 		Position expectedPosition = new Position(2,2);
-		Cell actualResult = fixture.getBottomRightNeighbour(cellToEvaluate, board);
+		Cell actualResult = fixture.getBottomRightNeighbour(cellToEvaluate, game);
 		assertThat(actualResult.getPosition(), is(expectedPosition));
 	}
 
@@ -167,7 +184,7 @@ public class NeighbourServiceImplTest {
 		Cell cellToEvaluate = new Cell(new Position(1, 1), LifeStatus.ALIVE);
 		Board board = buildBoard();
 
-		List<Cell> allNeighbours = fixture.getAllNeighbours(cellToEvaluate, board);
+		List<Cell> allNeighbours = fixture.getAllNeighbours(cellToEvaluate, null, board);
 		assertThat(allNeighbours.size(), is(8));
 	}
 

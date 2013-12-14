@@ -14,14 +14,11 @@ public class GameServiceImpl implements IGameService {
 	// Nice to have: GameValidator to ensure game size makes sense (eg: minimum 4x4?)
 	@Override
 	public Game initializeGame(Integer rows, Integer columns) {
-		Game game = new Game();
-		game.setRows(rows);
-		game.setColumns(columns);
-		game.setPositionCells(buildCells(rows, columns));
-		return game;
+		Board board = buildBoard(rows, columns);
+		return new Game(rows, columns, board );
 	}
 
-	protected Board buildCells(Integer rows, Integer columns) {
+	protected Board buildBoard(Integer rows, Integer columns) {
 		Map<Position, Cell> positionCells = new HashMap<Position, Cell>();
 		for(int row=0; row<rows; row++) {
 			for(int column=0; column<columns; column++) {

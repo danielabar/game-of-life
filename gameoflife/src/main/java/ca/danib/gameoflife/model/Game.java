@@ -5,7 +5,14 @@ public class Game {
 
 	private Integer rows;
 	private Integer columns;
-	private Board positionCells;
+	private Board board;
+
+	public Game(Integer rows, Integer columns, Board board) {
+		super();
+		this.rows = rows;
+		this.columns = columns;
+		this.board = board;
+	}
 
 	public Integer getRows() {
 		return rows;
@@ -19,11 +26,11 @@ public class Game {
 	public void setColumns(Integer columns) {
 		this.columns = columns;
 	}
-	public Board getPositionCells() {
-		return positionCells;
+	public Board getBoard() {
+		return board;
 	}
-	public void setPositionCells(Board positionCells) {
-		this.positionCells = positionCells;
+	public void setBoard(Board positionCells) {
+		this.board = positionCells;
 	}
 
 }

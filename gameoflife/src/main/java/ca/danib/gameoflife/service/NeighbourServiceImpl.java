@@ -5,27 +5,28 @@ import java.util.List;
 
 import ca.danib.gameoflife.model.Board;
 import ca.danib.gameoflife.model.Cell;
+import ca.danib.gameoflife.model.Game;
 import ca.danib.gameoflife.model.LifeStatus;
 import ca.danib.gameoflife.model.Position;
 
 public class NeighbourServiceImpl implements INeighbourService {
 
 	@Override
-	public Integer getNumberOfLivingNeighbours(Cell cell, Board board) {
-		List<Cell> allNeighbours = getAllNeighbours(cell, board);
+	public Integer getNumberOfLivingNeighbours(Cell cell, Game game, Board board) {
+		List<Cell> allNeighbours = getAllNeighbours(cell, game, board);
 		return countTheLiving(allNeighbours);
 	}
 
-	protected List<Cell> getAllNeighbours(Cell cell, Board board) {
+	protected List<Cell> getAllNeighbours(Cell cell, Game game, Board board) {
 		return Arrays.asList(
-				getTopLeftNeighbour(cell, board),
-				getTopMiddleNeighbour(cell, board),
-				getTopRightNeighbour(cell, board),
-				getLeftNeighbour(cell, board),
-				getRightNeighbour(cell, board),
-				getBottomLeftNeighbour(cell, board),
-				getBottomMiddleNeighbour(cell, board),
-				getBottomRightNeighbour(cell, board)
+				getTopLeftNeighbour(cell, game),
+				getTopMiddleNeighbour(cell, game),
+				getTopRightNeighbour(cell, game),
+				getLeftNeighbour(cell, game),
+				getRightNeighbour(cell, game),
+				getBottomLeftNeighbour(cell, game),
+				getBottomMiddleNeighbour(cell, game),
+				getBottomRightNeighbour(cell, game)
 			);
 	}
 
@@ -40,53 +41,60 @@ public class NeighbourServiceImpl implements INeighbourService {
 
 	}
 
-	// TODO: Edge cases if negative, "wrap around" to other side of board
-	protected Cell getTopLeftNeighbour(Cell cell, Board board) {
+	protected Cell getTopLeftNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
 		Position positionTopLeft = new Position(position.getRow()-1, position.getColumn()-1);
-		return board.getCellAtPosition(positionTopLeft);
+		return game.getBoard().getCellAtPosition(positionTopLeft);
 	}
 
-	protected Cell getTopMiddleNeighbour(Cell cell, Board board) {
+	protected Cell getTopMiddleNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
-		Position positionTopMiddle = new Position(position.getRow()-1, position.getColumn());
-		return board.getCellAtPosition(positionTopMiddle);
+
+		int topRow = position.getRow()-1;
+		if (topRow < 0) {
+			topRow = game.getRows()-1;
+		}
+
+
+		Position positionTopMiddle = new Position(topRow, position.getColumn());
+		return game.getBoard().getCellAtPosition(positionTopMiddle);
 	}
 
-	public Cell getTopRightNeighbour(Cell cell, Board board) {
+
+	public Cell getTopRightNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
 		Position positionTopRight = new Position(position.getRow()-1, position.getColumn()+1);
-		return board.getCellAtPosition(positionTopRight);
+		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
-	public Cell getLeftNeighbour(Cell cell, Board board) {
+	public Cell getLeftNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
 		Position positionTopRight = new Position(position.getRow(), position.getColumn()-1);
-		return board.getCellAtPosition(positionTopRight);
+		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
-	public Cell getRightNeighbour(Cell cell, Board board) {
+	public Cell getRightNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
 		Position positionTopRight = new Position(position.getRow(), position.getColumn()+1);
-		return board.getCellAtPosition(positionTopRight);
+		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
-	public Cell getBottomLeftNeighbour(Cell cell, Board board) {
+	public Cell getBottomLeftNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
 		Position positionTopRight = new Position(position.getRow()+1, position.getColumn()-1);
-		return board.getCellAtPosition(positionTopRight);
+		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
-	public Cell getBottomMiddleNeighbour(Cell cell, Board board) {
+	public Cell getBottomMiddleNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
 		Position positionTopRight = new Position(position.getRow()+1, position.getColumn());
-		return board.getCellAtPosition(positionTopRight);
+		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
-	public Cell getBottomRightNeighbour(Cell cell, Board board) {
+	public Cell getBottomRightNeighbour(Cell cell, Game game) {
 		Position position = cell.getPosition();
 		Position positionTopRight = new Position(position.getRow()+1, position.getColumn()+1);
-		return board.getCellAtPosition(positionTopRight);
+		return game.getBoard().getCellAtPosition(positionTopRight);
 	}
 
 }

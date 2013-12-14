@@ -32,13 +32,13 @@ public class GameServiceImplTest {
 		Integer expectedNumberOfCells = rows * columns;
 
 		Game game = fixture.initializeGame(rows, columns);
-		Map<Position, Cell> positionCells = game.getPositionCells().getPositionCells();
+		Map<Position, Cell> positionCells = game.getBoard().getPositionCells();
 
 		assertNotNull(game);
 		assertEquals(rows, game.getRows());
 		assertEquals(columns, game.getColumns());
 
-		assertNotNull(game.getPositionCells());
+		assertNotNull(game.getBoard());
 		assertEquals(expectedNumberOfCells.intValue(), positionCells.size());
 
 		Set<Position> actualPositionKeys = positionCells.keySet();
