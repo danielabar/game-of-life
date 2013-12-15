@@ -17,7 +17,7 @@ public class App  {
 		while (true) {
 			nextGeneration = gameService.buildNextGeneration(nextGeneration);
 			nextGeneration.draw();
-			Thread.sleep(200);
+			Thread.sleep(10);
 		}
     }
 }
