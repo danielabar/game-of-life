@@ -1,8 +1,8 @@
 package ca.danib.gameoflife.model;
 
 public enum LifeStatus {
-	ALIVE("A"),
-	DEAD("D");
+	ALIVE("X"),
+	DEAD("_");
 
 	private String printChar;
 

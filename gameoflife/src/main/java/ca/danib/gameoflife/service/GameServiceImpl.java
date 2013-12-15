@@ -82,12 +82,40 @@ public class GameServiceImpl implements IGameService {
 	}
 
 	// This could be in a SeedService/Strategy
+//	protected LifeStatus initializeLifeStatus(Integer row, Integer column) {
+//		if(row % 3 == 0 || column % 4 == 0) {
+//			return LifeStatus.ALIVE;
+//		}
+//		return LifeStatus.DEAD;
+//	}
+
+	// Glider
 	protected LifeStatus initializeLifeStatus(Integer row, Integer column) {
-		if(row % 3 == 0) {
+		if(row == 1 && column == 2) {
+			return LifeStatus.ALIVE;
+		}
+		if(row == 2 && (column == 3 || column == 4)) {
+			return LifeStatus.ALIVE;
+		}
+		if(row == 3 && (column == 2 || column == 2)) {
 			return LifeStatus.ALIVE;
 		}
 		return LifeStatus.DEAD;
 	}
+
+	// Blinker
+//	protected LifeStatus initializeLifeStatus(Integer row, Integer column) {
+//		if (row == 1 && column == 1) {
+//			return LifeStatus.ALIVE;
+//		}
+//		if (row == 2 && column == 1) {
+//			return LifeStatus.ALIVE;
+//		}
+//		if (row == 3 && column == 1) {
+//			return LifeStatus.ALIVE;
+//		}
+//		return LifeStatus.DEAD;
+//	}
 
 	public INeighbourService getNeighbourService() {
 		return neighbourService;
