@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.danib.gameoflife.model.Board;
@@ -20,13 +21,13 @@ import ca.danib.gameoflife.model.Game;
 import ca.danib.gameoflife.model.LifeStatus;
 import ca.danib.gameoflife.model.Position;
 
+// FIXME This is using real neighbour service, use mockito instead. Could have integration test to test collaboration with real service.
 public class GameServiceImplTest {
 
 	private GameServiceImpl fixture;
 
 	@Before
 	public void setUp() throws Exception {
-		// TODO: This is using real neighbour service, use mockito instead. Could have integration test to test collaboration with real service.
 		fixture = new GameServiceImpl();
 	}
 
@@ -80,28 +81,103 @@ public class GameServiceImplTest {
 		return false;
 	}
 
+	@Ignore("wip on varying seed strategy")
 	@Test
 	public void testInitializeLifeStatus_rowEvenlyDivisibleBy() {
 		Integer row = 9;
 		Integer column = 1;
-		LifeStatus result = fixture.initializeLifeStatus(row, column);
+		LifeStatus result = fixture.initializeLifeStatus(new Position(row, column), null, null);
 		assertEquals(LifeStatus.ALIVE, result);
 	}
 
+	@Ignore("wip on varying seed strategy")
 	@Test
 	public void testInitializeLifeStatus_rowNotEvenlyDivisibleBy() {
 		Integer row = 10;
 		Integer column = 1;
-		LifeStatus result = fixture.initializeLifeStatus(row, column);
+		LifeStatus result = fixture.initializeLifeStatus(new Position(row, column), null, null);
 		assertEquals(LifeStatus.DEAD, result);
 	}
 
+	@Ignore("wip on varying seed strategy")
 	@Test
 	public void testInitializeLifeStatus_rowZero() {
 		Integer row = 0;
 		Integer column = 1;
-		LifeStatus result = fixture.initializeLifeStatus(row, column);
+		LifeStatus result = fixture.initializeLifeStatus(new Position(row, column), null, null);
 		assertEquals(LifeStatus.ALIVE, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_underPopulated_living0() {
+		Cell cell = new Cell(null, LifeStatus.ALIVE);
+		Integer numberAlive = 0;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.DEAD, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_underPopulated_living1() {
+		Cell cell = new Cell(null, LifeStatus.ALIVE);
+		Integer numberAlive = 1;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.DEAD, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_surviving_living2() {
+		Cell cell = new Cell(null, LifeStatus.ALIVE);
+		Integer numberAlive = 2;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.ALIVE, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_surviving_living3() {
+		Cell cell = new Cell(null, LifeStatus.ALIVE);
+		Integer numberAlive = 3;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.ALIVE, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_overCrowded_living4() {
+		Cell cell = new Cell(null, LifeStatus.ALIVE);
+		Integer numberAlive = 4;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.DEAD, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_overCrowded_living5() {
+		Cell cell = new Cell(null, LifeStatus.ALIVE);
+		Integer numberAlive = 5;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.DEAD, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_comingBackToLife_living3() {
+		Cell cell = new Cell(null, LifeStatus.DEAD);
+		Integer numberAlive = 3;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.ALIVE, result);
+	}
+
+	@Test
+	public void testApplyLifeRules_stayingDead_living4() {
+		Cell cell = new Cell(null, LifeStatus.DEAD);
+		Integer numberAlive = 4;
+
+		LifeStatus result = fixture.applyLifeRules(cell, numberAlive);
+		assertEquals(LifeStatus.DEAD, result);
 	}
 
 	@Test

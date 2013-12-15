@@ -18,6 +18,7 @@ public class GameServiceImpl implements IGameService {
 		this.neighbourService = new NeighbourServiceImpl();
 	}
 
+	// TODO This constructor should be used by unit tests for mocking neighbour service
 	protected GameServiceImpl(INeighbourService neighbourService) {
 		super();
 		this.neighbourService = neighbourService;
@@ -35,10 +36,15 @@ public class GameServiceImpl implements IGameService {
 		Map<Position, Cell> nextGenPositionCells = new HashMap<Position, Cell>();
 		Map<Position, Cell> currentGenPositionCells = currentGen.getBoard().getPositionCells();
 		for (Cell currentGenCell : currentGenPositionCells.values()) {
-		    Cell nextGenCell = new Cell(currentGenCell.getPosition(), determineLifeStatus(currentGenCell, currentGen));
+		    Cell nextGenCell = new Cell(currentGenCell.getPosition(), applyLifeRules(currentGenCell, currentGen));
 		    nextGenPositionCells.put(currentGenCell.getPosition(), nextGenCell);
 		}
 		return new Game(currentGen.getRows(), currentGen.getColumns(), new Board(nextGenPositionCells));
+	}
+
+	protected LifeStatus applyLifeRules(Cell cell, Game game) {
+		Integer numberAlive = getNeighbourService().getNumberOfLivingNeighbours(cell, game);
+		return applyLifeRules(cell, numberAlive);
 	}
 
 	/*
@@ -47,21 +53,36 @@ public class GameServiceImpl implements IGameService {
 		Any live cell with two or three live neighbours lives on to the next generation.
 		Any dead cell with exactly three live neighbours becomes a live cell.
 	 */
-	protected LifeStatus determineLifeStatus(Cell cell, Game game) {
-		Integer numberAlive = getNeighbourService().getNumberOfLivingNeighbours(cell, game);
-		if (LifeStatus.ALIVE.equals(cell.getLifeStatus()) && numberAlive < 2) {
+	protected LifeStatus applyLifeRules(Cell cell, Integer numberAlive) {
+		if (underPopulated(cell, numberAlive)) {
 			return LifeStatus.DEAD;
 		}
-		if (LifeStatus.ALIVE.equals(cell.getLifeStatus()) && numberAlive > 3) {
+		if (overCrowded(cell, numberAlive)) {
 			return LifeStatus.DEAD;
 		}
-		if (LifeStatus.ALIVE.equals(cell.getLifeStatus()) && (numberAlive == 3 || numberAlive == 2)) {
+		if (survivingToNextGen(cell, numberAlive)) {
 			return LifeStatus.ALIVE;
 		}
-		if (LifeStatus.DEAD.equals(cell.getLifeStatus()) && numberAlive == 3) {
+		if (comingBackToLife(cell, numberAlive)) {
 			return LifeStatus.ALIVE;
 		}
 		return LifeStatus.DEAD;
+	}
+
+	protected boolean comingBackToLife(Cell cell, Integer numberAlive) {
+		return LifeStatus.DEAD.equals(cell.getLifeStatus()) && numberAlive == 3;
+	}
+
+	protected boolean survivingToNextGen(Cell cell, Integer numberAlive) {
+		return LifeStatus.ALIVE.equals(cell.getLifeStatus()) && (numberAlive == 2 || numberAlive == 3);
+	}
+
+	protected boolean overCrowded(Cell cell, Integer numberAlive) {
+		return LifeStatus.ALIVE.equals(cell.getLifeStatus()) && numberAlive > 3;
+	}
+
+	protected boolean underPopulated(Cell cell, Integer numberAlive) {
+		return LifeStatus.ALIVE.equals(cell.getLifeStatus()) && numberAlive < 2;
 	}
 
 	protected Board buildBoard(Integer rows, Integer columns) {
@@ -69,35 +90,47 @@ public class GameServiceImpl implements IGameService {
 		for(int row=0; row<rows; row++) {
 			for(int column=0; column<columns; column++) {
 				Position position = new Position(row, column);
-				positionCells.put(position, buildCell(position));
+				positionCells.put(position, buildCell(position, rows, columns));
 			}
 		}
 		return new Board(positionCells);
 	}
 
-	protected Cell buildCell(Position position) {
+	protected Cell buildCell(Position position, Integer rows, Integer columns) {
 		Cell cell = new Cell(position);
-		cell.setLifeStatus(initializeLifeStatus(position.getRow(), position.getColumn()));
+		cell.setLifeStatus(initializeLifeStatus(position, rows, columns));
 		return cell;
 	}
 
 	// This could be in a SeedService/Strategy
-//	protected LifeStatus initializeLifeStatus(Integer row, Integer column) {
-//		if(row % 3 == 0 || column % 4 == 0) {
+	// Random
+//	protected LifeStatus initializeLifeStatus(Position position, Integer rows, Integer columns) {
+//		Random random = new Random(new Date().getTime());
+//
+//		// TODO: Make 2 and 10 row/col "jiggles" respectively
+////		int randIntBetweenZeroAndRows = random.nextInt(rows);
+////		int randIntBetweenZeroAndCols = random.nextInt(columns);
+////		if (randIntBetweenZeroAndRows % 2 == 0 || randIntBetweenZeroAndCols % 10 == 0) {
+////			return LifeStatus.ALIVE;
+////		}
+//
+//		// Coin Toss
+//		int coinToss = random.nextInt(3);
+//		if (coinToss == 1) {
 //			return LifeStatus.ALIVE;
 //		}
 //		return LifeStatus.DEAD;
 //	}
 
 	// Glider
-	protected LifeStatus initializeLifeStatus(Integer row, Integer column) {
-		if(row == 1 && column == 2) {
+	protected LifeStatus initializeLifeStatus(Position position, Integer rows, Integer columns) {
+		if(position.getRow() == 1 && position.getColumn() == 2) {
 			return LifeStatus.ALIVE;
 		}
-		if(row == 2 && (column == 3 || column == 4)) {
+		if(position.getRow() == 2 && (position.getColumn() == 3 || position.getColumn() == 4)) {
 			return LifeStatus.ALIVE;
 		}
-		if(row == 3 && (column == 2 || column == 2)) {
+		if(position.getRow() == 3 && (position.getColumn() == 2 || position.getColumn() == 3)) {
 			return LifeStatus.ALIVE;
 		}
 		return LifeStatus.DEAD;
